@@ -14,7 +14,7 @@ class FaceDataset(Dataset):
         for labelIndex, className in enumerate(self.classes):
             classFolder = os.path.join(rootDir, className)
             for fileName in os.listdir(classFolder):
-                self.image_paths.append(os.path.join(classFolder, fileName))
+                self.imagePaths.append(os.path.join(classFolder, fileName))
                 self.labels.append(labelIndex)
         
     def __len__(self):
@@ -26,5 +26,3 @@ class FaceDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         return image, label
-        
-        
