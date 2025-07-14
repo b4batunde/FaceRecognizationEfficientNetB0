@@ -1,3 +1,5 @@
+# model.py
+
 import torchvision
 from torchvision import models
 from torchvision import transforms
@@ -16,7 +18,12 @@ def buildModel(numClasses : int, nutshell : bool):
     for param in model.features.parameters():
         param.requires_grad = False
 
-    if nutshell == True:
+    model.classifier = nn.Sequential(
+        nn.Dropout(p = 0.2, inplace = True),
+        nn.Linear(in_features = 1280, out_features = numClasses, bias = True)
+    )
+
+    if nutshell:
         summary(
             model = model,
             input_size = (32, 3, 224, 224),
@@ -25,12 +32,4 @@ def buildModel(numClasses : int, nutshell : bool):
             row_settings = ["var_names"]
         )
 
-    model.classifier = nn.Sequential(
-        nn.Dropout(p = 0.2, inplace = True),
-        nn.Linear(in_features = 1280, out_features = numClasses, bias = True)
-    )
-
     return model
-
-
-model0_0 = buildModel(len(mainDataset.classes), nutshell = True)
